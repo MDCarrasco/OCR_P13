@@ -40,9 +40,9 @@ workflows:
             - myheroku
           requires:
             - publish-on-dockerhub
-          filters: # Deploy only on main branch
+          filters: # Deploy only on master branch
             branches:
-              only: main
+              only: master
 
 jobs:
   compile-and-test:
@@ -104,7 +104,7 @@ jobs:
       - heroku/install
       - run: heroku config:set BUILD_NUMBER=$CIRCLE_BUILD_NUM -a $APP_NAME
       - run: heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $APP_NAME
-      - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
+      # - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
       - run: heroku stack:set heroku-20 -a $APP_NAME
       - heroku/deploy-via-git:
           app-name: $APP_NAME
