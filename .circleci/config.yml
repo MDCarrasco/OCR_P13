@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   python: circleci/python@1.5.0
+  heroku: circleci/heroku@1.2.6
 
 executors:
   docker-publisher:
@@ -32,6 +33,14 @@ workflows:
           filters: # Publish only on master branch
             branches:
               only: master
+      - deploy-on-heroku:
+          context:
+            - myheroku
+          requires:
+            - publish-on-dockerhub
+          filters: # Deploy only on main branch
+            branches:
+              only: main
 
 jobs:
   compile-and-test:
@@ -57,7 +66,6 @@ jobs:
             DNS_SENTRY: $DNS_SENTRY
           command: python manage.py test
   docking:
-
     executor: docker-publisher
     steps:
       - checkout
@@ -87,3 +95,15 @@ jobs:
             docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
             docker push $DOCKER_USER/$IMAGE_NAME:$CIRCLE_SHA1
             docker logout
+  deploy-on-heroku:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run: heroku config:set BUILD_NUMBER=$CIRCLE_BUILD_NUM -a $APP_NAME
+      - run: heroku config:set SECRET_KEY=$SECRET_KEY -a $APP_NAME
+      - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
+      - run: heroku stack:set heroku-20 -a $APP_NAME
+      - heroku/deploy-via-git:
+          app-name: $APP_NAME
+          force: true
