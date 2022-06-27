@@ -67,7 +67,7 @@ jobs:
           env:
             DJANGO_SECRET_KEY: $DJANGO_SECRET_KEY
             DNS_SENTRY: $DNS_SENTRY
-          command: python manage.py test
+          command: pytest
   docking:
     executor: docker-publisher
     steps:
@@ -108,6 +108,7 @@ jobs:
       - run: heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $APP_NAME
       # - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
       - run: heroku stack:set heroku-20 -a $APP_NAME
+      - run: heroku ps:scale web=1
       - heroku/deploy-via-git:
           app-name: $APP_NAME
           force: true
