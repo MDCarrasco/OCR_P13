@@ -25,3 +25,30 @@ jobs:
       - run:
           name: Run tests
           command: pytest
+
+workflows:
+  test:
+    jobs:
+      - build-and-test-all:
+          filters:
+            branches:
+              ignore:
+                - master
+  test-build-deploy:
+    jobs:
+      - build-and-test-master:
+          filters:
+            branches:
+              only:
+                - master
+      - docker/publish:
+          filters:
+            branches:
+              only:
+                - master
+          docker-password: DOCKER_PASSWORD
+          docker-username: DOCKER_USER
+          image: $DOCKER_USER/lettings
+          tag: $CIRCLE_SHA1,latest
+          requires:
+            - build-and-test-master
