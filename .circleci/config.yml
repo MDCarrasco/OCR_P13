@@ -17,12 +17,16 @@ workflows:
     jobs:
       - compile-and-test
       - docking:
+          context:
+            - mydockerhub
           requires:
             - compile-and-test
           filters: # Build only on master branch
             branches:
               only: master
       - publish-on-dockerhub:
+          context:
+            - mydockerhub
           requires:
             - docking
           filters: # Publish only on master branch
@@ -52,7 +56,8 @@ jobs:
             SECRET_KEY: $SECRET_KEY
             DNS_SENTRY: $DNS_SENTRY
           command: python manage.py test
-  docking: #
+  docking:
+
     executor: docker-publisher
     steps:
       - checkout
