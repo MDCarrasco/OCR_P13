@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - python/install-packages:
-          - pkg-manager: pip
+          pkg-manager: pip
       - run:
           name: Run tests
           command: pytest
@@ -21,7 +21,7 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - python/install-packages:
-          - pkg-manager: pip
+          pkg-manager: pip
       - run:
           name: Run tests
           command: pytest
