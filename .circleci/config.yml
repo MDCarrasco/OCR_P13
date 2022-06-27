@@ -45,7 +45,7 @@ jobs:
           command: pip install -r requirements.txt
       - run:
           name: Run test PEP8
-          command: flake8
+          command: flake8 --exclude 'env' 'migrations'
       - run:
           name: Run tests
           env:
