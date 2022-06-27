@@ -16,7 +16,9 @@ executors:
 workflows:
   ci:
     jobs:
-      - compile-and-test
+      - compile-and-test:
+          context:
+            - mydjango
       - docking:
           context:
             - mydockerhub
