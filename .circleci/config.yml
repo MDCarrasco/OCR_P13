@@ -28,12 +28,6 @@ workflows:
           filters: # Publish only on master branch
             branches:
               only: master
-      - deploy_orb:
-          requires:
-            - publish-on-dockerhub
-          filters: # Deploy only on master branch
-            branches:
-              only: master
 
 jobs:
   compile-and-test:
