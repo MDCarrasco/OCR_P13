@@ -55,8 +55,8 @@ workflows:
             branches:
               only:
                 - master
-          docker-password: $DOCKER_PASSWORD
-          docker-username: $DOCKER_USER
+          docker-password: DOCKER_PASSWORD
+          docker-username: DOCKER_USER
           image: $DOCKER_USER/lettings
           tag: $CIRCLE_SHA1,latest
           requires:
