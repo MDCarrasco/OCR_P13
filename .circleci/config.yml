@@ -2,62 +2,89 @@ version: 2.1
 
 orbs:
   python: circleci/python@1.5.0
-  docker: circleci/docker@1.7.0
 
-jobs:
-  build-and-test-all:
-    docker:
-      - image: cimg/python:3.9 # the primary container, where your job's commands are run
-        auth:
-          username: $DOCKER_USER
-          password: $DOCKER_PASSWORD
-    steps:
-      - checkout # check out the code in the project directory
-      - python/install-packages:
-          pkg-manager: pip
-      - run:
-          name: Run tests
-          command: pytest
-  build-and-test-master:
+executors:
+  docker-publisher:
+    environment:
+      IMAGE_NAME: oc-lettings-site
+      GIT_HASH: $CIRCLE_SHA1
+      APP_NAME: oc-lettings-1
     docker:
       - image: cimg/python:3.9
-        auth:
-          username: $DOCKER_USER
-          password: $DOCKER_PASSWORD
-    steps:
-      - checkout # check out the code in the project directory
-      - python/install-packages:
-          pkg-manager: pip
-      - run:
-          name: Run tests
-          command: pytest
 
 workflows:
-  test:
+  ci:
     jobs:
-      - build-and-test-all:
-          context: mydockerhub
-          filters:
-            branches:
-              ignore:
-                - master
-  test-build-deploy:
-    jobs:
-      - build-and-test-master:
-          context: mydockerhub
-          filters:
-            branches:
-              only:
-                - master
-      - docker/publish:
-          context: mydockerhub
-          filters:
-            branches:
-              only:
-                - master
-          docker-password: DOCKER_PASSWORD
-          docker-username: DOCKER_USER
-          image: $DOCKER_USER/lettings
-          tag: $CIRCLE_SHA1,latest
+      - compile-and-test
+      - docking:
           requires:
-            - build-and-test-master
+            - compile-and-test
+          filters: # Build only on master branch
+            branches:
+              only: master
+      - publish-on-dockerhub:
+          requires:
+            - docking
+          filters: # Publish only on master branch
+            branches:
+              only: master
+      - deploy_orb:
+          requires:
+            - publish-on-dockerhub
+          filters: # Deploy only on master branch
+            branches:
+              only: master
+
+jobs:
+  compile-and-test:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - run:
+          name: Create venv
+          command: python -m venv venv
+      - run:
+          name: Activate venv
+          command: source venv/bin/activate
+      - run:
+          name: Install reqs
+          command: pip install -r requirements.txt
+      - run:
+          name: Run test PEP8
+          command: flake8
+      - run:
+          name: Run tests
+          env:
+            SECRET_KEY: $SECRET_KEY
+            DNS_SENTRY: $DNS_SENTRY
+          command: python manage.py test
+  docking: #
+    executor: docker-publisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build docker image
+          command: docker build -t $DOCKER_USER/$IMAGE_NAME:$CIRCLE_SHA1 .
+      - run:
+          name: Save docker image
+          command: docker save -o image.tar $DOCKER_USER/$IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+  publish-on-dockerhub:
+    executor: docker-publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load saved docker image (image.tar)
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: push on dockerhub
+          command: |
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+            docker push $DOCKER_USER/$IMAGE_NAME:$CIRCLE_SHA1
+            docker logout
