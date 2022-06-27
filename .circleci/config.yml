@@ -108,7 +108,7 @@ jobs:
       - run: heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $APP_NAME
       # - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
       - run: heroku stack:set heroku-20 -a $APP_NAME
-      - run: heroku ps:scale web=1
+      - run: heroku ps:scale web=1 -a $APP_NAME
       - heroku/deploy-via-git:
           app-name: $APP_NAME
           force: true
