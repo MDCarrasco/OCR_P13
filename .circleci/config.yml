@@ -9,7 +9,7 @@ executors:
     environment:
       IMAGE_NAME: oc-lettings
       GIT_HASH: $CIRCLE_SHA1
-      APP_NAME: oc-lettings-1
+      APP_NAME: oc-lettings-17
     docker:
       - image: cimg/python:3.9
 
@@ -37,6 +37,7 @@ workflows:
               only: master
       - deploy-on-heroku:
           context:
+            - oc-lettings
             - myheroku
           requires:
             - publish-on-dockerhub
