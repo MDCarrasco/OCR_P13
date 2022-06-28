@@ -121,4 +121,3 @@ jobs:
       - heroku/deploy-via-git:
           app-name: $APP_NAME
           force: true
-      - run: python3 manage.py migrate -a $APP_NAME
