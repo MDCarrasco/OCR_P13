@@ -60,6 +60,15 @@ jobs:
           name: Install reqs
           command: pip install -r requirements.txt
       - run:
+          name: Make migrations
+          command: python manage.py makemigrations
+      - run:
+          name: Migrate
+          command: python manage.py migrate
+      - run:
+          name: Loaddata
+          command: python manage.py loaddata fixtures/*
+      - run:
           name: Run test PEP8
           command: flake8 --exclude 'venv' 'migrations'
       - run:
