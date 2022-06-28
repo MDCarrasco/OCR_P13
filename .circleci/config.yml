@@ -108,7 +108,7 @@ jobs:
       - run: heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $APP_NAME
       # - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
       - run: heroku stack:set heroku-20 -a $APP_NAME
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -a $APP_NAME
       - run: python3 manage.py migrate -a $APP_NAME
       - heroku/deploy-via-git:
           app-name: $APP_NAME
