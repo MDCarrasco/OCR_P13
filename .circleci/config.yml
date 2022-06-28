@@ -51,17 +51,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create env
-          command: python -m venv env
+          name: Create venv
+          command: python -m venv venv
       - run:
-          name: Activate env
-          command: source env/bin/activate
+          name: Activate venv
+          command: source venv/bin/activate
       - run:
           name: Install reqs
           command: pip install -r requirements.txt
       - run:
           name: Run test PEP8
-          command: flake8 --exclude 'env' 'migrations'
+          command: flake8 --exclude 'venv' 'migrations'
       - run:
           name: Run tests
           env:
