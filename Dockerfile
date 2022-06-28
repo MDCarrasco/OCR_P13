@@ -16,5 +16,10 @@ RUN pip3 install -r requirements.txt
 # Allow port
 # EXPOSE $PORT
 
+# Migration
+CMD /bin/bash -c 'python manage.py makemigrations'
+CMD /bin/bash -c 'python manage.py migrate'
+CMD /bin/bash -c 'python manage.py loaddata fixtures/*'
+
 # Run server localy
 CMD /bin/bash -c 'python manage.py runserver 0.0.0.0:${PORT}'
