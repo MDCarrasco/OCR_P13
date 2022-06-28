@@ -11,11 +11,11 @@ WORKDIR /django
 COPY . /django/
 
 # install reqs
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Allow port
 EXPOSE 8000
-ENTRYPOINT ["python", "manage.py"]
+ENTRYPOINT ["pip", "python", "manage.py"]
 
 # Run server localy
 CMD /bin/bash -c 'python manage.py runserver 0.0.0.0:${PORT}'
