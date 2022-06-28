@@ -14,7 +14,8 @@ COPY . /django/
 RUN pip3 install -r requirements.txt
 
 # Allow port
-# EXPOSE $PORT
+EXPOSE 8000
+ENTRYPOINT ["python", "manage.py"]
 
 # Run server localy
 CMD /bin/bash -c 'python manage.py runserver 0.0.0.0:${PORT}'
