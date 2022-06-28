@@ -51,11 +51,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create venv
-          command: python -m venv venv
+          name: Create env
+          command: python -m venv env
       - run:
-          name: Activate venv
-          command: source venv/bin/activate
+          name: Activate env
+          command: source env/bin/activate
       - run:
           name: Install reqs
           command: pip install -r requirements.txt

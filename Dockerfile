@@ -4,11 +4,6 @@ FROM python:3.9
 # setup env vars
 ENV PYTHONUNBUFFERED=1
 
-# setup virtual env
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
-
 # set working directory
 WORKDIR /django
 
