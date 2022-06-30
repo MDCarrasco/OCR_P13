@@ -15,7 +15,7 @@ RUN pip install -r requirements.txt
 
 # Allow port
 EXPOSE 8000
-ENTRYPOINT ["pip", "python", "manage.py"]
+ENTRYPOINT ["python", "manage.py"]
 
 # Run server localy
 CMD /bin/bash -c 'python manage.py runserver 0.0.0.0:${PORT}'
