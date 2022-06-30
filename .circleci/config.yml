@@ -75,7 +75,7 @@ jobs:
           name: Run tests
           env:
             DJANGO_SECRET_KEY: $DJANGO_SECRET_KEY
-            # DNS_SENTRY: $DNS_SENTRY
+            DNS_SENTRY: $DNS_SENTRY
           command: pytest
   docking:
     executor: docker-publisher
@@ -116,7 +116,7 @@ jobs:
       - run: heroku config:set DISABLE_COLLECTSTATIC=1 -a $APP_NAME
       - run: heroku config:set BUILD_NUMBER=$CIRCLE_BUILD_NUM -a $APP_NAME
       - run: heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $APP_NAME
-      # - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
+      - run: heroku config:set DNS_SENTRY=$DNS_SENTRY -a $APP_NAME
       - run: heroku stack:set heroku-20 -a $APP_NAME
       - heroku/deploy-via-git:
           app-name: $APP_NAME

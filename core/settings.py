@@ -1,6 +1,8 @@
 import os
 import dj_database_url
 import django_heroku
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,6 +10,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+
+# SENTRY
+SENTRY_DSN = None
+if os.environ.get('SENTRY_AUTH') and os.environ.get('SENTRY_PROJECT_ID'):
+    SENTRY_DSN = (f'https://{os.environ["SENTRY_AUTH"]}@o1302989.ingest.sentry.io/'
+                  f'{os.environ["SENTRY_PROJECT_ID"]}')
+sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()])
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')

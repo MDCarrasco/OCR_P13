@@ -48,6 +48,12 @@ export PATH
 DJANGO_SECRET_KEY="fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s"
 export DJANGO_SECRET_KEY
 
+# sentry
+SENTRY_AUTH="c94c6def806541ffa4bdfe01adda9cfa"
+SENTRY_PROJECT_ID="6541359"
+export SENTRY_AUTH
+export SENTRY_PROJECT_ID
+
 # unset PYTHONHOME if set
 # this will fail if PYTHONHOME is set to the empty string (which is bad anyway)
 # could use `if (set -u; : $PYTHONHOME) ;` in bash

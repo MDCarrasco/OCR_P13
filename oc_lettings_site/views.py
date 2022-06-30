@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
 
+def trigger_error(request):
+    return 1 / 0
+
+
 def index(request):
     """Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     Quisque molestie quam lobortis leo consectetur ullamcorper non id est.
