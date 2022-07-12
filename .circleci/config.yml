@@ -123,4 +123,4 @@ jobs:
       - heroku/deploy-via-git:
           app-name: $APP_NAME
           force: true
-      - run: heroku ps:scale web=1
+      - run: heroku ps:scale web=1 -a $APP_NAME
