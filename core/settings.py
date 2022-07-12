@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 if 'DATABASE_URL' in os.environ:
-    DATABASE_URL = os.environ.get('DATABASE_URL')
+    DATABASE_URL = os.environ['DATABASE_URL']
 else:
     DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'oc-lettings-site.sqlite3')
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
