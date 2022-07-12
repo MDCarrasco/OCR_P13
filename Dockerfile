@@ -24,13 +24,13 @@ EXPOSE 8000
 ENTRYPOINT ["python", "manage.py"]
 
 # Make migrations
-CMD /bin/bash -c 'python manage.py makemigrations'
+# CMD /bin/bash -c 'python manage.py makemigrations'
 
 # Migrate
-CMD /bin/bash -c 'python manage.py migrate'
+# CMD /bin/bash -c 'python manage.py migrate'
 
 # Loaddata
-CMD /bin/bash -c 'python manage.py loaddata fixtures/*'
+# CMD /bin/bash -c 'python manage.py loaddata fixtures/*'
 
 # Run server localy
 CMD /bin/bash -c 'python manage.py runserver 0.0.0.0:${PORT}'
