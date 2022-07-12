@@ -84,6 +84,7 @@ if ON_HEROKU:
 else:
     DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'oc-lettings-site.sqlite3')
 
+
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 
