@@ -75,13 +75,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-ON_HEROKU = False
-if 'HEROKU' in os.environ:
-    ON_HEROKU = True
-
-if ON_HEROKU:
-    # DATABASE_URL = 'postgresql://<postgresql>'
-    DATABASES = {'default': dj_database_url.config()}
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {'default': dj_database_url.config(ssl_require=True)}
 else:
     DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'oc-lettings-site.sqlite3')
     DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
