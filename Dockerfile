@@ -14,10 +14,10 @@ COPY . /django/
 RUN pip install -r requirements.txt
 
 # search sqlite
-RUN apt-cache search sqlite
+# RUN apt-cache search sqlite
 
 # install sqlite3
-RUN apt-get install sqlite3
+# RUN apt-get install sqlite3
 
 # Allow port
 EXPOSE 8000
