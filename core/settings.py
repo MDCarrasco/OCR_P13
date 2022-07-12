@@ -80,11 +80,12 @@ if 'HEROKU' in os.environ:
     ON_HEROKU = True
 
 if ON_HEROKU:
-    DATABASE_URL = 'postgresql://<postgresql>'
+    # DATABASE_URL = 'postgresql://<postgresql>'
+    DATABASES = {'default': dj_database_url.config()}
 else:
     DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'oc-lettings-site.sqlite3')
+    DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
-DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 
 # Password validation
